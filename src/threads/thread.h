@@ -93,6 +93,10 @@ struct thread
     struct list_elem allelem;           /* List element for all threads list. */
     int64_t whentowakeup;   
 
+    int init_priority;
+    struct lock *wait_on_lock;
+    struct list donate_list;
+    struct list_elem donelem;
  
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
@@ -134,6 +138,8 @@ void thread_yield (void);
 typedef void thread_action_func (struct thread *t, void *aux);
 void thread_foreach (thread_action_func *, void *);
 
+bool thread_cur_check(void);
+bool thread_cmp_priority(const struct list_elem *temp,const struct list_elem *p, void *aux UNUSED);
 int thread_get_priority (void);
 void thread_set_priority (int);
 
